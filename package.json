@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "watcher": "nodemon app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/LDRMuse/complex-app#readme",
   "dependencies": {
     "ejs": "^3.1.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
   }
 }
