@@ -6,8 +6,8 @@ exports.logout = () => {
 
 }
 
-exports.register = () => {
-
+exports.register = (req,res) => {
+res.send('THanks for registers')
 }
 
 exports.home = (req,res) => {
