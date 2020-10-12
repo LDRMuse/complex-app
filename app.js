@@ -4,6 +4,7 @@ const app = express()
 // require() in node executes file and returns whatever that file exports
 const router = require('./router')
 
+
 // express is making public folder accessible
 app.use(express.static('public'))
 
@@ -12,9 +13,7 @@ app.use(express.static('public'))
 app.set('views', 'views')
 app.set('view engine', 'ejs')
 
-//express is doing a get req to the base URL
-app.get('/', (req, res) => {
-  res.render('home-guest')
-})
+// express is using the router
+app.use('/', router)
 
 app.listen(3000)
