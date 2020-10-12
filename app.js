@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+// require() in node executes file and returns whatever that file exports
+const router = require('./router')
+
 // express is making public folder accessible
 app.use(express.static('public'))
 
