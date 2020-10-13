@@ -1,6 +1,7 @@
-const validator = require('validator')
-
 //This file as (User) gets called by the userController
+
+const usersCollection = require('../db').collection('users')
+const validator = require('validator')
 
 
 // storing user input
@@ -40,6 +41,9 @@ User.prototype.register = function () {
   this.validate()
   // step 2. Only if there are no errors,
   // then save user data into database
+if (!this.errors.length) {
+  usersCollection.insertOne(this.data)
+}
 }
 
 
