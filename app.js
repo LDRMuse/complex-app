@@ -21,4 +21,4 @@ app.set('view engine', 'ejs')
 // express is using the router
 app.use('/', router)
 
-app.listen(3000)
+module.exports = app
