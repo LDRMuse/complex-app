@@ -35,7 +35,7 @@ exports.register = function (req, res) {
 exports.home = function (req, res) {
   // if there is a request with the tied session to the user exists, send them the "welcome" message
   if (req.session.user) {
-    res.send('welcome to actual application')
+    res.render('home-dashboard')
   }
   else {
     res.render('home-guest')
