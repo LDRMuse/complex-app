@@ -45,8 +45,6 @@ User.prototype.login = function () {
 }
 
 
-
-
 User.prototype.validate = function () {
   if (this.data.username == "") { this.errors.push("You must provide a username.") }
   if (this.data.username != "" && !validator.isAlphanumeric(this.data.username)) { this.errors.push("Username can only contain letters and numbers.") }
@@ -66,6 +64,9 @@ User.prototype.register = function () {
   // Step #2: Only if there are no validation errors
   // then save the user data into a database
   if (!this.errors.length) {
+    // hash user password
+    let salt = bcrypt.genSaltSync(10)
+    this.data.password = bcrypt.hashSync(this.data.password, salt)
     usersCollection.insertOne(this.data)
   }
 }
