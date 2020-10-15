@@ -10,6 +10,8 @@ let sessionOptions = session({
   cookie: {maxAge: 1000 * 60 * 60 * 24, httpOnly: true}
 })
 
+app.use(sessionOptions)
+
 // require() in node executes file and returns whatever that file exports
 const router = require('./router')
 
