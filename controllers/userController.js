@@ -1,4 +1,3 @@
-const { callbackify } = require('util')
 const User = require('../models/User')
 
 // this function just connects the business logic from the models folder
@@ -10,7 +9,6 @@ exports.login = function (req, res) {
     // after callback function is called, send back the result message
     res.send(result)
   })
-
 }
 
 exports.logout = function () {
