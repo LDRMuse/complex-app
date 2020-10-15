@@ -5,6 +5,7 @@ const app = express()
 
 let sessionOptions = session({
   secret: 'JavaScript is SO COOL',
+  store: new MongoStore({client: require('./db')}),
   resave: false,
   saveUninitialized: false,
   // this formula represents 1 day

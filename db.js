@@ -6,7 +6,7 @@ dotenv.config();
 const connectionString = process.env.MONGO_CONNECTION
 
 mongodb.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true }, function (err, client) {
-  module.exports = client.db()
+  module.exports = client
   const app = require('./app')
   app.listen(process.env.PORT)
 })
