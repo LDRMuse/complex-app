@@ -3,7 +3,7 @@ const dotenv = require('dotenv')
 
 dotenv.config();
 
-const connectionString = process.env.MONGO_USERS_URI
+const connectionString = process.env.MONGO_CONNECTION
 
 mongodb.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true }, function (err, client) {
   module.exports = client.db()
