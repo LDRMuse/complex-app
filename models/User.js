@@ -28,8 +28,8 @@ User.prototype.login = function () {
     // if user, go into the db, find the username that matches the user input (this.data.username)
     usersCollection.findOne({ username: this.data.username })
       .then((user) => {
-        // if this is a user, && if the user.password matches the user's input password (this.data.password), then send 'congrats' result
-        if (user && user.password === this.data.password) {
+        // if this is a user, && user's input password matches the hashed password, send 'congrats' result
+        if (user && bcrypt.compareSync(this.data.password, user.password)) {
           resolve('congrats')
         }
         // else, send 'Invalid username/password' err
