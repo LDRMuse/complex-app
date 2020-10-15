@@ -1,23 +1,26 @@
 const User = require('../models/User')
 
-exports.login = function() {
+// this function just connects the business logic from the models folder
+exports.login = function (req, res) {
+  let user = new User(req.body)
+  user.login()
 
 }
 
-exports.logout = function() {
+exports.logout = function () {
 
 }
 
-exports.register = function(req, res) {
+exports.register = function (req, res) {
   let user = new User(req.body)
   user.register()
   if (user.errors.length) {
     res.send(user.errors)
   } else {
-      res.send('Congrats, no errors')
-    }
+    res.send('Congrats, no errors')
+  }
 }
 
-exports.home = function(req, res) {
+exports.home = function (req, res) {
   res.render('home-guest')
 }
