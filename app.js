@@ -1,6 +1,6 @@
 const express = require('express')
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo')(session)
 const app = express()
 
 let sessionOptions = session({
