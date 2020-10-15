@@ -19,7 +19,7 @@ User.prototype.cleanUp = function () {
   }
 }
 
-User.prototype.login = function () {
+User.prototype.login = function (callback) {
   this.cleanUp()
   // go into the db, find the username that matches the user input (this.data.username)
   // then take the second arg as a function that calls once the first argument is complete
@@ -27,12 +27,12 @@ User.prototype.login = function () {
   // if user, then pass that document of data as a parameter into the function
   // this time we used an arrow function because "this" will tie to it rather than tieing the the global function
   usersCollection.findOne({ username: this.data.username }, (err, user) => {
-  // if this is a user, && if the user.password equals the user's input password (this.data.password)
+    // if this is a user, && if the user.password equals the user's input password (this.data.password)
     if (user && user.password === this.data.password) {
-console.log('congrats')
+      callback('congrats')
     }
     else {
-console.log('invalid username/password')
+      callback('Invalid username/password')
     }
   })
 }
