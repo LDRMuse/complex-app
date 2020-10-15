@@ -2,6 +2,14 @@ const express = require('express')
 const session = require('express-session')
 const app = express()
 
+let sessionOptions = session({
+  secret: 'JavaScript is SO COOL',
+  resave: false,
+  saveUninitialized: false,
+  // this formula represents 1 day
+  cookie: {maxAge: 1000 * 60 * 60 * 24, httpOnly: true}
+})
+
 // require() in node executes file and returns whatever that file exports
 const router = require('./router')
 
