@@ -7,8 +7,10 @@ exports.login = function (req, res) {
   // .then() states what we want if the promise succeeds
   // .catch() states what we want if the promise fails
   user.login()
-    // result is resolve
     .then(function (result) {
+      // take the request, use unique session per user and add new properties to session
+      req.session.user = { username: user.data.username }
+      // result is resolve
       res.send(result)
       // err is reject
     }).catch(function (err) {
@@ -31,5 +33,11 @@ exports.register = function (req, res) {
 }
 
 exports.home = function (req, res) {
-  res.render('home-guest')
+  // if there is a request with the tied session to the user exists, send them the "welcome" message
+  if (req.session.user) {
+    res.send('welcome to actual application')
+  }
+  else {
+    res.render('home-guest')
+  }
 }
