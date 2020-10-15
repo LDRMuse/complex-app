@@ -3,12 +3,17 @@ const User = require('../models/User')
 // this function just connects the business logic from the models folder
 exports.login = function (req, res) {
   let user = new User(req.body)
-  // login is calling a callback function from Users.js
-  // function() is the arg from the param 'callback' from Users.js
-  user.login(function (result) {
-    // after callback function is called, send back the result message
-    res.send(result)
-  })
+  // retrieving the promise from Users.js
+  // .then() states what we want if the promise succeeds
+  // .catch() states what we want if the promise fails
+  user.login()
+    // result is resolve
+    .then(function (result) {
+      res.send(result)
+      // err is reject
+    }).catch(function (err) {
+      res.send(err)
+    })
 }
 
 exports.logout = function () {
