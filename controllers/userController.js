@@ -14,9 +14,10 @@ exports.login = function (req, res) {
       req.session.save(() => {
         res.redirect('/')
       })
-      // err is reject
+      // err comes from the reject param in the Promise from Users.js
     }).catch(function (err) {
-      res.send(err)
+      req.flash('errors', err)
+      res.redirect('/')
     })
 }
 

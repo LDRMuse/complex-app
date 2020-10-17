@@ -14,6 +14,7 @@ let sessionOptions = session({
 })
 
 app.use(sessionOptions)
+app.use(flash())
 
 // require() in node executes file and returns whatever that file exports
 const router = require('./router')
