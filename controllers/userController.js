@@ -10,8 +10,10 @@ exports.login = function (req, res) {
     .then(function (result) {
       // take the request, use unique session per user and add new properties to session
       req.session.user = { username: user.data.username }
-      // result is resolve
-      res.send(result)
+      // use save() to save credentials while db is updating
+      req.session.save(() => {
+        res.redirect('/')
+      })
       // err is reject
     }).catch(function (err) {
       res.send(err)
@@ -19,7 +21,7 @@ exports.login = function (req, res) {
 }
 
 exports.logout = function (req, res) {
-  req.session.destroy(function() {
+  req.session.destroy(function () {
     res.redirect('/')
   })
 }
