@@ -33,7 +33,10 @@ exports.register = function (req, res) {
   let user = new User(req.body)
   user.register()
     .then(() => {
-
+      req.session.user = { username: user.data.username }
+      req.session.save(() => {
+        res.redirect('/')
+      })
     })
     .catch((regErrors) => {
       regErrors.forEach(function (error) {
