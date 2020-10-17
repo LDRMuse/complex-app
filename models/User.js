@@ -60,6 +60,12 @@ User.prototype.validate = async function () {
     let usernameExists = await usersCollection.findOne({ username: this.data.username })
     if (usernameExists) { this.errors.push("That username is already taken") }
   }
+
+  // only if email is valid, then check to see if it's already taken
+  if (validator.isEmail(this.data.email)) {
+    let emailExists = await usersCollection.findOne({ email: this.data.email })
+    if (emailExists) { this.errors.push("That email is already being used") }
+  }
 }
 
 User.prototype.register = function () {
