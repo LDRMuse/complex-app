@@ -18,8 +18,9 @@ exports.login = function (req, res) {
     })
 }
 
-exports.logout = function () {
-
+exports.logout = function (req, res) {
+  req.session.destroy()
+  res.send('you are now logged out')
 }
 
 exports.register = function (req, res) {
@@ -35,7 +36,7 @@ exports.register = function (req, res) {
 exports.home = function (req, res) {
   // if there is a request with the tied session to the user exists, send them the "welcome" message
   if (req.session.user) {
-    res.render('home-dashboard', {username: req.session.user.username})
+    res.render('home-dashboard', { username: req.session.user.username })
   }
   else {
     res.render('home-guest')
