@@ -32,16 +32,17 @@ exports.logout = function (req, res) {
 exports.register = function (req, res) {
   let user = new User(req.body)
   user.register()
-  if (user.errors.length) {
-    user.errors.forEach(function (error) {
-      req.flash('regErrors', error)
+    .then(() => {
+
     })
-    req.session.save(() => {
-      res.redirect('/')
+    .catch((regErrors) => {
+      regErrors.forEach(function (error) {
+        req.flash('regErrors', error)
+      })
+      req.session.save(() => {
+        res.redirect('/')
+      })
     })
-  } else {
-    res.send('Congrats, no errors')
-  }
 }
 
 exports.home = function (req, res) {
