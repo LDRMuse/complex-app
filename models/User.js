@@ -31,6 +31,7 @@ User.prototype.login = function () {
       .then((user) => {
         // if this is a user, && user's input password matches the hashed password, send 'congrats' result
         if (user && bcrypt.compareSync(this.data.password, user.password)) {
+          this.getAvatar()
           resolve('congrats')
         }
         // else, send 'Invalid username/password' err
@@ -86,6 +87,7 @@ User.prototype.register = function () {
       let salt = bcrypt.genSaltSync(10)
       this.data.password = bcrypt.hashSync(this.data.password, salt)
       await usersCollection.insertOne(this.data)
+      this.getAvatar()
       resolve()
     }
     else {
