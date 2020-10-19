@@ -21,7 +21,15 @@ Post.prototype.validate = function () {
 }
 
 Post.prototype.create = function () {
-
+  return new Promise((resolve, reject) => {
+    this.cleanUp()
+    this.validate()
+    if (!this.errors.length) {
+      // save this post into the database
+    } else {
+      reject(this.errors)
+    }
+  })
 }
 
 module.exports = Post
