@@ -20,7 +20,7 @@ exports.login = function (req, res) {
   user.login()
     .then(function (result) {
       // take the request, use unique session per user and add new properties to session
-      req.session.user = { avatar: user.avatar, username: user.data.username }
+      req.session.user = { avatar: user.avatar, username: user.data.username, _id: user.data._id }
       // use save() to save credentials while db is updating
       req.session.save(() => {
         res.redirect('/')
@@ -44,7 +44,7 @@ exports.register = function (req, res) {
   let user = new User(req.body)
   user.register()
     .then(() => {
-      req.session.user = { username: user.data.username, avatar: user.avatar }
+      req.session.user = { username: user.data.username, avatar: user.avatar, _id: user.data._id }
       req.session.save(() => {
         res.redirect('/')
       })
