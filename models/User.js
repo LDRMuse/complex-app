@@ -31,6 +31,7 @@ User.prototype.login = function () {
       .then((user) => {
         // if this is a user, && user's input password matches the hashed password, send 'congrats' result
         if (user && bcrypt.compareSync(this.data.password, user.password)) {
+          this.data = user
           this.getAvatar()
           resolve('congrats')
         }
