@@ -1,3 +1,5 @@
+//middleware - logical functions are created in the models
+
 const User = require('../models/User')
 
 exports.mustBeLoggedIn = function (req, res, next) {

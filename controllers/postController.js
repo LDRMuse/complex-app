@@ -1,10 +1,13 @@
+//middleware - logical functions are created in the models
+
 const Post = require('../models/Post')
 
-
+// this just shows this page when making a GET request to the specific route shown in hte router
 exports.viewCreateScreen = function (req, res) {
   res.render('create-post')
 }
 
+// this passes the data to the controller so that the controller can use it
 exports.create = function (req, res) {
   let post = new Post(req.body, req.session.user._id)
   post.create()
