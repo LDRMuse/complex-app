@@ -70,3 +70,12 @@ exports.home = function (req, res) {
     res.render('home-guest', { errors: req.flash('errors'), regErrors: req.flash('regErrors') })
   }
 }
+
+exports.ifUserExists = function (req, res, next) {
+  next()
+}
+
+// displays the profile HTML page using ejs
+exports.profilePostsScreen = function (req, res) {
+  res.render('profile')
+}
