@@ -72,7 +72,15 @@ exports.home = function (req, res) {
 }
 
 exports.ifUserExists = function (req, res, next) {
-  next()
+  User.findByUsername(req.params.username)
+    .then((userDocument) => {
+      // profileUser is a property we just created on the request object
+      req.profileUser = userDocument
+      next()
+    })
+    .catch(() => {
+      res.render('four04')
+    })
 }
 
 // displays the profile HTML page using ejs
