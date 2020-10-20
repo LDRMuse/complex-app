@@ -57,7 +57,13 @@ Post.findSingleById = function (id) {
     // creating an array of posts and displaying/resolving a single post
     let posts = await postsCollection.aggregate([
       { $match: { _id: new ObjectID(id) } },
-      { $lookup: {from: 'users', localField: 'author', foreignField: '_id', as: 'authorDocument'} }
+      { $lookup: {from: 'users', localField: 'author', foreignField: '_id', as: 'authorDocument'} },
+      {$project: {
+        title: 1,
+        body: 1,
+        createdDate: 1,
+        author: {$arrayElemAt: ['$authorDocument', 0]}
+      }}
     ]).toArray()
     if (posts.length) {
       console.log(posts[0])
