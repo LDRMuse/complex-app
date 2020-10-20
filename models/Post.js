@@ -46,4 +46,21 @@ Post.prototype.create = function () {
   })
 }
 
+// Post is a constructor function, findSingleById is also function; functions are objects
+// if the id data is NOT a string OR the data is NOT a valid mongoDB ID
+Post.findSingleById = function (id) {
+  return new Promise( async function (resolve, reject) {
+    if (typeof (id) != 'string' || !ObjectID.isValid(id)) {
+      reject()
+      return
+    }
+    let post = await postsCollection.findOne({ _id: new ObjectID(id) })
+    if (post) {
+      resolve(post)
+    } else {
+      reject()
+    }
+  })
+}
+
 module.exports = Post
