@@ -71,9 +71,12 @@ Post.findSingleById = function (id) {
 
     // clean up author property in each post object
     posts = posts.map((post) => {
+      // now the new Object in author will only display the username and avatar
+      // we go inside the User model, grab the author
+      // if the getAvatar is true, then display the gravatar URL as a string (.avatar)
       post.author = {
         username: post.author.username,
-        avatar: new User(post.author, true)
+        avatar: new User(post.author, true).avatar
       }
       return post
     })
