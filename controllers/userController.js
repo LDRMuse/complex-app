@@ -86,6 +86,7 @@ exports.ifUserExists = function (req, res, next) {
 exports.profilePostsScreen = function (req, res) {
   // add second argument as an object of data
   // this data comes from the profileUser that we created above
+  // we are setting new keys with the value of req.profileUser.username and req.profileUser.avatar
   res.render('profile', {
     profileUsername: req.profileUser.username,
     profileAvatar: req.profileUser.avatar
