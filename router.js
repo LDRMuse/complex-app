@@ -12,5 +12,7 @@ router.post('/logout', userController.logout)
 // post related routes
 router.get('/create-post', userController.mustBeLoggedIn , postController.viewCreateScreen)
 router.post('/create-post', userController.mustBeLoggedIn , postController.create)
+// did not include mustBeLoggedIn because we want guests to view the post
+router.get('/post/:id', postController.viewSinglePost)
 
 module.exports = router
