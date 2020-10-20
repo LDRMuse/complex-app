@@ -71,19 +71,23 @@ exports.home = function (req, res) {
   }
 }
 
+
 exports.ifUserExists = function (req, res, next) {
-  User.findByUsername(req.params.username)
-    .then((userDocument) => {
-      // profileUser is a property we just created on the request object
-      req.profileUser = userDocument
-      next()
-    })
-    .catch(() => {
-      res.render('four04')
-    })
+  User.findByUsername(req.params.username).then(function (userDocument) {
+    // profileUser is a property we just created on the request object
+    req.profileUser = userDocument
+    next()
+  }).catch(function () {
+    res.render("four04")
+  })
 }
 
 // displays the profile HTML page using ejs
 exports.profilePostsScreen = function (req, res) {
-  res.render('profile')
+  // add second argument as an object of data
+  // this data comes from the profileUser that we created above
+  res.render('profile', {
+    profileUsername: req.profileUser.username,
+    profileAvatar: req.profileUser.avatar
+  })
 }
