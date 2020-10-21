@@ -6,17 +6,20 @@ const app = express()
 
 let sessionOptions = session({
   secret: 'JavaScript is SO COOL',
-  store: new MongoStore({client: require('./db')}),
+  store: new MongoStore({ client: require('./db') }),
   resave: false,
   saveUninitialized: false,
   // this formula represents 1 day
-  cookie: {maxAge: 1000 * 60 * 60 * 24, httpOnly: true}
+  cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true }
 })
 
 app.use(sessionOptions)
 app.use(flash())
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
+  // make current user id available on the req object
+  if (req.session.user) { req.visitorId = req.session.user._id } else {req.visitorId = 0}
+  // make user session data available from within view templates
   res.locals.user = req.session.user
   next()
 })
@@ -25,7 +28,7 @@ app.use(function(req, res, next) {
 const router = require('./router')
 
 // boilerplate code; tells express to add the user submitted data onto our request object
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 
