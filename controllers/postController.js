@@ -22,9 +22,21 @@ exports.create = function (req, res) {
 // req.params.id connects to the :id set up in the router
 exports.viewSinglePost = async function (req, res) {
   try {
-    let post =  await Post.findSingleById(req.params.id, req.visitorId)
+    let post = await Post.findSingleById(req.params.id, req.visitorId)
     res.render('single-post-screen', { post: post })
   } catch (error) {
     res.render("four04.ejs")
+  }
+}
+
+// function to view edit screen
+exports.viewEditScreen = async function (req, res) {
+  try {
+    // bring in the post with its content to be able to edit on
+    // then after promise is fulfilled, display the edit-post page along with the content
+    let post = await Post.findSingleById(req.params.id)
+    res.render('edit-post', { post: post })
+  } catch () {
+    res.render('four04')
   }
 }
