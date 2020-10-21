@@ -47,30 +47,23 @@ Post.prototype.create = function () {
   })
 }
 
-// Post is a constructor function, findSingleById is also function; functions are objects
-// if the id data is NOT a string OR the data is NOT a valid mongoDB ID
-Post.findSingleById = function (id) {
-  return new Promise(async function (resolve, reject) {
-    if (typeof (id) != 'string' || !ObjectID.isValid(id)) {
-      reject()
-      return
-    }
-    // creating an array to use mongoDB methods to organize/connect the author to the post
-    let posts = await postsCollection.aggregate([
-      { $match: { _id: new ObjectID(id) } },
-      { $lookup: { from: 'users', localField: 'author', foreignField: '_id', as: 'authorDocument' } },
-      {
-        $project: {
-          title: 1,
-          body: 1,
-          createdDate: 1,
-          author: { $arrayElemAt: ['$authorDocument', 0] }
-        }
-      }
-    ]).toArray()
+Post.reusablePostQuery = function(uniqueOperations) {
+  return new Promise(async function(resolve, reject) {
+    // use concat to return a new array and add uniqueOperations onto that array
+    let aggOperations = uniqueOperations.concat([
+      {$lookup: {from: "users", localField: "author", foreignField: "_id", as: "authorDocument"}},
+      {$project: {
+        title: 1,
+        body: 1,
+        createdDate: 1,
+        author: {$arrayElemAt: ["$authorDocument", 0]}
+      }}
+    ])
+// creating an array to use mongoDB methods to organize/connect the author to the post
+    let posts = await postsCollection.aggregate(aggOperations).toArray()
 
     // clean up author property in each post object
-    posts = posts.map((post) => {
+    posts = posts.map(function(post) {
       // now the new Object in author will only display the username and avatar
       // we go inside the User model, grab the author
       // if the getAvatar is true, then display the gravatar URL as a string (.avatar)
@@ -78,8 +71,25 @@ Post.findSingleById = function (id) {
         username: post.author.username,
         avatar: new User(post.author, true).avatar
       }
+
       return post
     })
+
+    resolve(posts)
+  })
+}
+// Post is a constructor function, findSingleById is also function; functions are objects
+// if the id data is NOT a string OR the data is NOT a valid mongoDB ID, reject()
+Post.findSingleById = function(id) {
+  return new Promise(async function(resolve, reject) {
+    if (typeof(id) != "string" || !ObjectID.isValid(id)) {
+      reject()
+      return
+    }
+
+    let posts = await Post.reusablePostQuery([
+      {$match: {_id: new ObjectID(id)}}
+    ])
 
     if (posts.length) {
       console.log(posts[0])
@@ -88,6 +98,13 @@ Post.findSingleById = function (id) {
       reject()
     }
   })
+}
+// function to take in the authorId as a param from the controller
+Post.findByAuthorId = function(authorId) {
+  return Post.reusablePostQuery([
+    {$match: {author: authorId}},
+    {$sort: {createdDate: -1}}
+  ])
 }
 
 module.exports = Post
