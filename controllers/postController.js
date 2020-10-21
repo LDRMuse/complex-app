@@ -36,7 +36,7 @@ exports.viewEditScreen = async function (req, res) {
     // then after promise is fulfilled, display the edit-post page along with the content
     let post = await Post.findSingleById(req.params.id)
     res.render('edit-post', { post: post })
-  } catch () {
+  } catch {
     res.render('four04')
   }
 }
