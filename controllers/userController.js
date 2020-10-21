@@ -1,6 +1,7 @@
 //middleware - logical functions are created in the models
 
 const User = require('../models/User')
+const Post = require('../models/Post')
 
 exports.mustBeLoggedIn = function (req, res, next) {
   if (req.session.user) {
@@ -84,11 +85,18 @@ exports.ifUserExists = function (req, res, next) {
 
 // displays the profile HTML page using ejs
 exports.profilePostsScreen = function (req, res) {
-  // add second argument as an object of data
-  // this data comes from the profileUser that we created above
-  // we are setting new keys with the value of req.profileUser.username and req.profileUser.avatar
-  res.render('profile', {
-    profileUsername: req.profileUser.username,
-    profileAvatar: req.profileUser.avatar
-  })
+  // ask our post model for posts by a certain author id
+  Post.findByAuthorId(req.profileUser._id)
+    .then((posts) => {
+      // add second argument as an object of data
+      // this data comes from the profileUser that we created above
+      // we are setting new keys with the value of req.profileUser.username and req.profileUser.avatar
+      res.render('profile', {
+        posts: posts,
+        profileUsername: req.profileUser.username,
+        profileAvatar: req.profileUser.avatar
+      })
+    }).catch(() => {
+      res.render('four04')
+    })
 }
