@@ -12,10 +12,12 @@ exports.create = function (req, res) {
   let post = new Post(req.body, req.session.user._id)
   post.create()
     .then(() => {
-      res.send('new post created')
+      req.flash('success', 'New post successfully created')
+      req.session.save(() => res.redirect(`/post/id/`))
     })
     .catch((errors) => {
-      res.send(errors)
+      errors.forEach((error) => req.flash('errors', error))
+      req.session.save(() => res.redirect('/create-post'))
     })
 }
 
