@@ -16,8 +16,10 @@ router.get('/create-post', userController.mustBeLoggedIn , postController.viewCr
 router.post('/create-post', userController.mustBeLoggedIn , postController.create)
 router.get('/post/:id', postController.viewSinglePost) // did not include mustBeLoggedIn because we want guests to view the post
 router.get('/post/:id/edit', postController.viewEditScreen)
+router.post('/post/:id/edit', postController.edit)
 
 //profile related routes
 router.get('/profile/:username', userController.ifUserExists, userController.profilePostsScreen)
+
 
 module.exports = router
