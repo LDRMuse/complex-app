@@ -3,6 +3,7 @@
 const postsCollection = require('../db').db().collection('posts')
 const ObjectID = require('mongodb').ObjectID
 const User = require('./User')
+const sanitizeHTML = require('sanitize-html')
 
 // this defines what post will be
 let Post = function (data, userId, requestedPostId) {
