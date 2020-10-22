@@ -20,8 +20,8 @@ Post.prototype.cleanUp = function () {
 
   // only allow the specific properties in the object
   this.data = {
-    title: this.data.title.trim(),
-    body: this.data.body.trim(),
+    title: sanitizeHTML(this.data.title.trim(), { allowedTags: [], allowedAttributes: [] }),
+    body: sanitizeHTML(this.data.body.trim(), { allowedTags: [], allowedAttributes: [] }),
     createdDate: new Date(),
     author: ObjectID(this.userId)
   }
