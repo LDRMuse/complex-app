@@ -1,12 +1,15 @@
+// This file is connected to the Database to perform CRUD
+
 const postsCollection = require('../db').db().collection('posts')
 const ObjectID = require('mongodb').ObjectID
 const User = require('./User')
 
 // this defines what post will be
-let Post = function (data, userId) {
+let Post = function (data, userId, requestedPostId) {
   this.data = data
   this.errors = []
   this.userId = userId
+  this.requestedPostId = requestedPostId
 }
 
 // need a function to make sure data is a string
@@ -46,6 +49,41 @@ Post.prototype.create = function () {
     }
   })
 }
+
+
+//function to update post
+Post.prototype.update = function () {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let post = await Post.findSingleById(this.requestedPostId, this.userId)
+      if (post.isVisitorOwner) {
+        // actually update the DB
+        let status = await this.actuallyUpdate()
+        resolve(status)
+      } else {
+        reject()
+      }
+    } catch {
+      reject()
+    }
+  })
+}
+
+// function to connect to DB and actually update
+Post.prototype.actuallyUpdate = function () {
+  return new Promise(async (resolve, reject) => {
+    this.cleanUp()
+    this.validate()
+    if (!this.errors.length) {
+      await postsCollection.findOneAndUpdate({ _id: new ObjectID(this.requestedPostId) }, { $set: { title: this.data.tile, body: this.data.body } })
+      resolve('success')
+    } else {
+      resolve('failure')
+    }
+  })
+}
+
+
 
 Post.reusablePostQuery = function (uniqueOperations, visitorId) {
   return new Promise(async function (resolve, reject) {
@@ -112,5 +150,6 @@ Post.findByAuthorId = function (authorId) {
     { $sort: { createdDate: -1 } }
   ])
 }
+
 
 module.exports = Post
