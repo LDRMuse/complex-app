@@ -35,7 +35,7 @@ exports.viewEditScreen = async function (req, res) {
     // bring in the post with its content to be able to edit on
     // then after promise is fulfilled, display the edit-post page along with the content
     let post = await Post.findSingleById(req.params.id)
-    if (post.authorId === req.visitorId) {
+    if (post.authorId == req.visitorId) {
       res.render('edit-post', { post: post })
     } else {
       req.flash('errors', 'You do not have permission to perform that action')
