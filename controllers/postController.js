@@ -35,7 +35,14 @@ exports.viewEditScreen = async function (req, res) {
     // bring in the post with its content to be able to edit on
     // then after promise is fulfilled, display the edit-post page along with the content
     let post = await Post.findSingleById(req.params.id)
-    res.render('edit-post', { post: post })
+    if (post.authorId === req.visitorId) {
+      res.render('edit-post', { post: post })
+    } else {
+      req.flash('errors', 'You do not have permission to perform that action')
+      req.session.save(function() {
+        res.redirect('/')
+      })
+    }
   } catch {
     res.render('four04')
   }
@@ -43,31 +50,31 @@ exports.viewEditScreen = async function (req, res) {
 
 //function to edit post
 exports.edit = function (req, res) {
-    let post = new Post(req.body, req.visitorId, req.params.id)
-    post.update().then((status) => {
-      // the post was successfully updated in the DB
-      // OR user did have permission but were validation errors
-      if (status === 'success') {
-        // post was updated in DB
-        req.flash('success', 'Post successfully updated!')
+  let post = new Post(req.body, req.visitorId, req.params.id)
+  post.update().then((status) => {
+    // the post was successfully updated in the DB
+    // OR user did have permission but were validation errors
+    if (status === 'success') {
+      // post was updated in DB
+      req.flash('success', 'Post successfully updated!')
+      req.session.save(function () {
+        res.redirect(`/post/${req.params.id}/edit`)
+      })
+    } else {
+      // validation errors
+      post.errors.forEach(function (error) {
+        req.flash('errors', error)
         req.session.save(function () {
           res.redirect(`/post/${req.params.id}/edit`)
         })
-      } else {
-        // validation errors
-        post.errors.forEach(function (error) {
-          req.flash('errors', error)
-          req.session.save(function () {
-            res.redirect(`/post/${req.params.id}/edit`)
-          })
-        })
-      }
-    }).catch(() => {
-      // if a post with the request id doesn't exist
-      // OR if the current visitor is not he owner of the post
-      req.flash('errors', 'You do not have permission to perform that action')
-      req.session.save(function () {
-        res.redirect('/')
       })
+    }
+  }).catch(() => {
+    // if a post with the request id doesn't exist
+    // OR if the current visitor is not he owner of the post
+    req.flash('errors', 'You do not have permission to perform that action')
+    req.session.save(function () {
+      res.redirect('/')
     })
+  })
 }
