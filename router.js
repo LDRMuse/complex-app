@@ -17,6 +17,7 @@ router.post('/create-post', userController.mustBeLoggedIn , postController.creat
 router.get('/post/:id', postController.viewSinglePost) // did not include mustBeLoggedIn because we want guests to view the post
 router.get('/post/:id/edit', userController.mustBeLoggedIn, postController.viewEditScreen)
 router.post('/post/:id/edit', userController.mustBeLoggedIn, postController.edit)
+router.post('/post/:id/delete', userController.mustBeLoggedIn, postController.delete)
 
 //profile related routes
 router.get('/profile/:username', userController.ifUserExists, userController.profilePostsScreen)
