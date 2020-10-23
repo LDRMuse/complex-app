@@ -103,15 +103,13 @@ Post.reusablePostQuery = function (uniqueOperations, visitorId) {
     ])
     // creating an array to use mongoDB methods to organize/connect the author to the post
     let posts = await postsCollection.aggregate(aggOperations).toArray()
-
     // clean up author property in each post object
     posts = posts.map(function (post) {
-      // look inside each post to see if visitor is owner bt comparing mongoDB $author to authorID
+      // set key isVisitorOwner to equal the value visitorId - making it true
       post.isVisitorOwner = post.authorId.equals(visitorId)
-
-      // now the new Object in author will only display the username and avatar
-      // we go inside the User model, grab the author
-      // if the getAvatar is true, then display the gravatar URL as a string (.avatar)
+      // now the Object for author will only display the username and avatar
+      // username key sets value by looking inside post then author to username
+      // avatar key has the value of a new User object that holds the author and true. if true, it grabs the avatar
       post.author = {
         username: post.author.username,
         avatar: new User(post.author, true).avatar
