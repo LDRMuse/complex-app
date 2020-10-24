@@ -3,6 +3,7 @@ export default class Search {
   constructor() {
     this.injectHTML()
     this.headerSearchIcon = document.querySelector(".header-search-icon")
+    this.overlay = document.querySelector(".search-overlay")
     this.events()
   }
   // 2. Events such as clicking, scrolling, user hitting keys on the keyboard
@@ -14,11 +15,11 @@ export default class Search {
   }
   //3. Methods
   openOverlay() {
-    alert('openOverlay method just ran!!!!')
+    this.overlay.classList.add("search-overlay--visible")
   }
 
   injectHTML() {
-    document.body.insertAdjacentHTML('beforeend', ` <div class="search-overlay search-overlay--visible">
+    document.body.insertAdjacentHTML('beforeend', ` <div class="search-overlay">
     <div class="search-overlay-top shadow-sm">
       <div class="container container--narrow">
         <label for="live-search-field" class="search-overlay-icon"><i class="fas fa-search"></i></label>
