@@ -5,6 +5,7 @@ export default class Search {
     this.headerSearchIcon = document.querySelector(".header-search-icon")
     this.overlay = document.querySelector(".search-overlay")
     this.closeIcon = document.querySelector(".close-live-search")
+    this.inputField = document.querySelector("#live-search-field")
     this.events()
   }
   // 2. Events such as clicking, scrolling, user hitting keys on the keyboard
@@ -20,6 +21,9 @@ export default class Search {
   //3. Methods
   openOverlay() {
     this.overlay.classList.add("search-overlay--visible")
+    // setTimeout for 50 milliseconds so that the browser has enough time to run function
+    // focus() places the user's cursor in the input field
+    setTimeout(() => this.inputField.focus() , 50)
   }
 
   closeOverlay() {
