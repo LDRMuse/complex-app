@@ -169,4 +169,22 @@ Post.delete = function (postIdToDelete, currentUserId) {
   })
 }
 
+Post.search = function (searchTerm) {
+  return new Promise(async (resolve, reject) => {
+    // the if statement does 2 things
+    // 1. prevents a malicious user from sending an object to the DB
+    // 2. makes sure if someone sends a weird request to the route w/o a search term at all,
+    // it will be typeof undefined which does not equal 'string'
+    if (typeof searchTerm == 'string') {
+      let posts = await Post.reusablePostQuery([
+        { $match: { $text: { $search: searchTerm } } },
+        { $sort: { score: { $meta: "textScore" } } }
+      ])
+      resolve(posts)
+    } else {
+      reject()
+    }
+  })
+}
+
 module.exports = Post
