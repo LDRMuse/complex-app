@@ -18,6 +18,7 @@ router.get('/post/:id', postController.viewSinglePost) // did not include mustBe
 router.get('/post/:id/edit', userController.mustBeLoggedIn, postController.viewEditScreen)
 router.post('/post/:id/edit', userController.mustBeLoggedIn, postController.edit)
 router.post('/post/:id/delete', userController.mustBeLoggedIn, postController.delete)
+router.post('/search', postController.search)
 
 //profile related routes
 router.get('/profile/:username', userController.ifUserExists, userController.profilePostsScreen)

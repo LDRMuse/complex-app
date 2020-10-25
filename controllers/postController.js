@@ -95,3 +95,17 @@ exports.delete = function (req, res) {
     })
   })
 }
+
+// function for using frontend data to search the database
+exports.search = function (req, res) {
+  Post.search(req.body.searchTerm)
+  // before then/catch, the Post.search function has to do it's own job
+  // it's job is to run the Promise
+  // once the Promise is resolved THEN or CATCH
+    .then((posts) => {
+      res.json(posts)
+    })
+    .catch(() => {
+      res.json([])
+    })
+}
