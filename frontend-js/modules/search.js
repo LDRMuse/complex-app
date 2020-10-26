@@ -28,9 +28,17 @@ export default class Search {
   //3. Methods
   keyPressHandler() {
     let value = this.inputField.value
+    if (value == '') {
+      clearTimeout(this.typingWaitTimer)
+      this.hideLoaderIcon()
+      this.hideResultsArea()
+    }
+
+
     if (value != '' && value != this.previousValue) {
       clearTimeout(this.typingWaitTimer)
       this.showLoaderIcon()
+      this.hideResultsArea()
       this.typingWaitTimer = setTimeout(() => this.sendRequest(), 3000)
     }
     this.previousValue = value
@@ -73,10 +81,24 @@ export default class Search {
     } else {
       this.resultsArea.innerHTML = `<p class="alert alert-danger text-center shadow-sm">Sorry, we could not find any results for that search.</p>`
     }
+    this.hideLoaderIcon()
+    this.showResultsArea()
   }
 
   showLoaderIcon() {
     this.loaderIcon.classList.add('circle-loader--visible')
+  }
+
+  hideLoaderIcon() {
+    this.loaderIcon.classList.remove('circle-loader--visible')
+  }
+
+  showResultsArea() {
+    this.resultsArea.classList.add("live-search-results--visible")
+  }
+
+  hideResultsArea() {
+    this.resultsArea.classList.remove("live-search-results--visible")
   }
 
   openOverlay() {
