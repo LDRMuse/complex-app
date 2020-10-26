@@ -8,7 +8,7 @@ export default class Search {
     this.overlay = document.querySelector(".search-overlay")
     this.closeIcon = document.querySelector(".close-live-search")
     this.inputField = document.querySelector("#live-search-field")
-    this.resultsArea = document.querySelector("#live-search-results")
+    this.resultsArea = document.querySelector(".live-search-results")
     this.loaderIcon = document.querySelector(".circle-loader")
     this.typingWaitTimer
     this.previousValue = ''
@@ -100,6 +100,7 @@ export default class Search {
   hideResultsArea() {
     this.resultsArea.classList.remove("live-search-results--visible")
   }
+
 
   openOverlay() {
     this.overlay.classList.add("search-overlay--visible")
