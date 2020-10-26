@@ -108,8 +108,8 @@ Post.reusablePostQuery = function (uniqueOperations, visitorId) {
       // set key isVisitorOwner to equal the value visitorId - making it true
       post.isVisitorOwner = post.authorId.equals(visitorId)
       // now the Object for author will only display the username and avatar
-      // username key sets value by looking inside post then author to username
-      // avatar key has the value of a new User object that holds the author and true. if true, it grabs the avatar
+      // we make the authorId undefined so the public can't see it
+      post.authorId = undefined
       post.author = {
         username: post.author.username,
         avatar: new User(post.author, true).avatar
